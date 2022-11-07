@@ -1,5 +1,7 @@
 # Dab
 
+![alt text](resources/dab.png)
+
 Managing your outgoing web connections from Fly with Smokescreen
 
 <!-- cut here-->
@@ -14,7 +16,7 @@ To handle this, Stripe created (and open-sourced), Smokescreen, an outbound prox
 
 ## The Dockerfile
 
-One thing with Smokescreen is that there is no binary executable distributed for it. That means it has to be built to deploy it. This example comes with a Dockerfile that does a multi-stage build - first compiling the code, then moving the executable to a clean image to run. 
+One thing with Smokescreen is that there is no binary executable distributed for it. That means it has to be built to deploy it. This example comes with a Dockerfile that does a multi-stage build - first compiling the code, then moving the executable to a clean image to run.
 
 ## Deploying on Fly
 
@@ -26,7 +28,7 @@ fly init smokescreen-example --import fly.source.toml
 
 Replace `smokescreen-example` with your preferred app name (`yourappname`) or omit it to have Fly generate a name for you. You may be prompted for which organization you want the app to run in. Ensure that it is running in the same organization as the apps you wish to manage their external calls.
 
-Smokescreen runs on port 4750 and applications wishing to connect to it from within your Fly organization should send their requests to `yourappname.internal`. To connect to Smokescreen from outside the Fly environment, use [Fly's Wireguard](https://fly.io/docs/reference/wireguard/) to create a VPN into your Fly organization. 
+Smokescreen runs on port 4750 and applications wishing to connect to it from within your Fly organization should send their requests to `yourappname.internal`. To connect to Smokescreen from outside the Fly environment, use [Fly's Wireguard](https://fly.io/docs/reference/wireguard/) to create a VPN into your Fly organization.
 
 This Smokescreen example includes support for a proxy password and an access control list.
 
@@ -44,7 +46,7 @@ fly deploy
 
 ## Testing
 
-To test Smokescreen is running correctly, you can use `curl`. The -x option on curl tells it to use the following address and port as a proxy. 
+To test Smokescreen is running correctly, you can use `curl`. The -x option on curl tells it to use the following address and port as a proxy.
 
 As Smokescreen has a password set, we also have to use the -U option to send our password. Therefore the command:
 
@@ -52,20 +54,20 @@ As Smokescreen has a password set, we also have to use the -U option to send our
 curl -U anyname:yourpassword -x yourappname.internal:4750 https://fly.io
 ```
 
-Would attempt to use the proxy to contact the secure version of the fly.io site. It'll echo back the contents of the front page. 
+Would attempt to use the proxy to contact the secure version of the fly.io site. It'll echo back the contents of the front page.
 
 Remember for this to work, you'll need to configure a Wireguard VPN into your Fly organization. If you don't, the `.internal` host name resolution will not work.
 
- If an attempt was made to connect to `localhost`, as a network mapper may do, this would happen:
+If an attempt was made to connect to `localhost`, as a network mapper may do, this would happen:
 
 ```bash
-curl -U anyname:yourpassword -x yourappname.internal:4750 http://localhost/ 
+curl -U anyname:yourpassword -x yourappname.internal:4750 http://localhost/
 Egress proxying is denied to host 'localhost': The destination address (127.0.0.1) was denied by rule 'Deny: Not Global Unicast'. destination address was denied by rule, see error.
 ```
 
 ## Notes
 
-* The configuration shown is an example, with a simple password lock on the authentication. As it currently stands, if the connection is "authed" (that is, has a valid password), then the ACL will let the connection take place and note it in the logs:
+- The configuration shown is an example, with a simple password lock on the authentication. As it currently stands, if the connection is "authed" (that is, has a valid password), then the ACL will let the connection take place and note it in the logs:
 
 ```yaml
 ---
@@ -75,11 +77,11 @@ services:
     project: users
     action: report
 
-
 default:
-    project: other
-    action: enforce
+  project: other
+  action: enforce
 ```
+
 The `enforce` action only allows connections to sites in the `allowed_domains` list (which as there aren't any, means it blocks all unauthorized connections). Read more about ACLs in the [Smokescreen README](https://github.com/stripe/smokescreen#acls).
 
 The `authed` users requests have a `report` action which allows the connection to be made and logs information about that connection. Running `fly logs` will show entries like this:
@@ -93,5 +95,4 @@ The first entry records the connection being allowed, the second the completion 
 
 ## Discuss
 
-* Discuss the Smokescreen example on its [dedicated community.fly.io topic](https://community.fly.io/t/new-smokescreen-example/466)
-
+- Discuss the Smokescreen example on its [dedicated community.fly.io topic](https://community.fly.io/t/new-smokescreen-example/466)

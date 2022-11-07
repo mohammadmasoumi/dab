@@ -1,0 +1,4 @@
+# fly.toml file generated for smokescreen-example on 2020-12-10T15:52:34-07:00
+
+app = "smokescreen-example"
+

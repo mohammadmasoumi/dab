@@ -1,0 +1,22 @@
+# docker-compose.yml
+version: "3"
+
+services:
+  dab:
+    build: .
+    container_name: dab
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - /cert:/cert
+    command:
+      [
+        "smokescreen",
+        "--egress-acl-file",
+        "/etc/smokescreen/acl.yaml",
+        "--tls-server-bundle-file",
+        "/cert/bundle.crt",
+        "--tls-client-ca-file",
+        "/cert/cert.pem",
+      ]

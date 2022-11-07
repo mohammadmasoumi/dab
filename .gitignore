@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.idea/
+
+# virtual env
+/venv
+.vscode
+docker-compose-local.yml
+.env

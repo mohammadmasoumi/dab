@@ -1,6 +1,6 @@
 # Dab
 
-![alt text](resources/dab.png)
+![alt text](resources/dab2.jpeg)
 
 Managing your outgoing web connections from Fly with Smokescreen
 
